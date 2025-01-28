@@ -8,4 +8,3 @@ statsmodels
 selenium
 webdriver-manager
 openai
-azure-openai
