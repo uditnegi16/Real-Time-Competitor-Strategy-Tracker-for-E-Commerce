@@ -7,3 +7,5 @@ scikit-learn
 statsmodels
 selenium
 webdriver-manager
+openai
+azure-openai
