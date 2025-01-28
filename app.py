@@ -1,4 +1,3 @@
-%pip install streamlit pandas plotly requests openai scikit-learn statsmodels transformers numpy
 import json
 from datetime import datetime
 
