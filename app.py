@@ -45,7 +45,7 @@ def train_predictive_model(data):
   x_train, x_test, y_train, y_test=train_test_split(x, y, test_size=0.2, random_state=42, train_size=0.8)
 
   model=RandomForestRegressor(random_state=42)
-  model.fit(x_train, y_train)
+  model.fit()
   return model
 
 import numpy as np
