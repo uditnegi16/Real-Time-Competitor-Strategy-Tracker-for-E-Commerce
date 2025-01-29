@@ -1,10 +1,12 @@
 streamlit
+transformers
 numpy
 pandas
 plotly
 requests
 scikit-learn
 statsmodels
+streamlit
+transformers
 selenium
 webdriver-manager
-openai
