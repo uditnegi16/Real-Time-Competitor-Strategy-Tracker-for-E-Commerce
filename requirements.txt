@@ -12,3 +12,4 @@ selenium
 webdriver-manager
 beautifulsoup4
 chromedriver-autoinstaller
+chromium-chromedriver
