@@ -11,3 +11,4 @@ transformers
 selenium
 webdriver-manager
 beautifulsoup4
+chromedriver-autoinstaller
