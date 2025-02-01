@@ -30,10 +30,13 @@ def get_driver():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
-    chrome_path = ChromeDriverManager().install()
-    service = Service(chrome_path)
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    # Use Streamlit Cloud's default Chromium path
+    chrome_options.binary_location = "/usr/bin/chromium-browser"
 
+    # Set correct Chromedriver path
+    service = Service("/usr/bin/chromedriver")  
+
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     return driver
     
 def scrape_product_data(link):
