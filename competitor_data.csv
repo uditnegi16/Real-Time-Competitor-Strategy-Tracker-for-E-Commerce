@@ -2,40 +2,64 @@ product_name,Price,Discount,Date
 Apple AirPods Pro (2nd Generation),24999,15,2024-01-01
 Apple AirPods Pro (2nd Generation),23999,18,2024-01-03
 Apple AirPods Pro (2nd Generation),22999,20,2024-01-05
-Apple AirPods Pro (2nd Generation),21999,25,2024-01-06
-Apple AirPods Pro (2nd Generation),20999,30,2024-01-08
+Apple AirPods Pro (2nd Generation),21999,22,2024-01-06
+Apple AirPods Pro (2nd Generation),20999,25,2024-01-08
+Apple AirPods Pro (2nd Generation),19999,30,2024-01-09
+Apple AirPods Pro (2nd Generation),18999,35,2024-01-10
+Apple AirPods Pro (2nd Generation),17999,40,2024-01-11
 Sony WH-1000XM4 Wireless Noise Cancelling Headphones,29990,20,2024-02-16
-Sony WH-1000XM4 Wireless Noise Cancelling Headphones,28990,25,2024-02-17
-Sony WH-1000XM4 Wireless Noise Cancelling Headphones,27990,30,2024-02-20
-Sony WH-1000XM4 Wireless Noise Cancelling Headphones,26990,35,2024-02-22
-Sony WH-1000XM4 Wireless Noise Cancelling Headphones,25990,40,2024-02-24
+Sony WH-1000XM4 Wireless Noise Cancelling Headphones,28990,22,2024-02-17
+Sony WH-1000XM4 Wireless Noise Cancelling Headphones,27990,25,2024-02-20
+Sony WH-1000XM4 Wireless Noise Cancelling Headphones,26990,30,2024-02-22
+Sony WH-1000XM4 Wireless Noise Cancelling Headphones,25990,35,2024-02-24
+Sony WH-1000XM4 Wireless Noise Cancelling Headphones,24990,40,2024-02-25
+Sony WH-1000XM4 Wireless Noise Cancelling Headphones,23990,45,2024-02-26
+Sony WH-1000XM4 Wireless Noise Cancelling Headphones,22990,50,2024-02-27
 Samsung Galaxy Buds2 Pro,17990,25,2024-03-11
 Samsung Galaxy Buds2 Pro,16990,28,2024-03-12
 Samsung Galaxy Buds2 Pro,15990,30,2024-03-13
 Samsung Galaxy Buds2 Pro,14990,32,2024-03-14
 Samsung Galaxy Buds2 Pro,13990,35,2024-03-15
+Samsung Galaxy Buds2 Pro,12990,38,2024-03-16
+Samsung Galaxy Buds2 Pro,11990,40,2024-03-17
+Samsung Galaxy Buds2 Pro,10990,42,2024-03-18
 Jabra Elite 85t True Wireless Earbuds,18999,10,2024-03-24
 Jabra Elite 85t True Wireless Earbuds,17999,12,2024-03-25
 Jabra Elite 85t True Wireless Earbuds,16999,15,2024-03-27
 Jabra Elite 85t True Wireless Earbuds,15999,18,2024-03-28
 Jabra Elite 85t True Wireless Earbuds,14999,20,2024-03-29
+Jabra Elite 85t True Wireless Earbuds,13999,22,2024-03-30
+Jabra Elite 85t True Wireless Earbuds,12999,25,2024-03-31
+Jabra Elite 85t True Wireless Earbuds,11999,28,2024-04-01
 Bose QuietComfort 35 II,29990,30,2024-05-21
 Bose QuietComfort 35 II,28990,32,2024-05-22
 Bose QuietComfort 35 II,27990,35,2024-05-23
 Bose QuietComfort 35 II,26990,38,2024-05-24
 Bose QuietComfort 35 II,25990,40,2024-05-25
+Bose QuietComfort 35 II,24990,42,2024-05-26
+Bose QuietComfort 35 II,23990,45,2024-05-27
+Bose QuietComfort 35 II,22990,50,2024-05-28
 Google Pixel Buds Pro,22990,18,2024-06-26
 Google Pixel Buds Pro,21990,20,2024-06-27
 Google Pixel Buds Pro,20990,22,2024-06-28
 Google Pixel Buds Pro,19990,25,2024-06-29
 Google Pixel Buds Pro,18990,28,2024-06-30
+Google Pixel Buds Pro,17990,30,2024-07-01
+Google Pixel Buds Pro,16990,35,2024-07-02
+Google Pixel Buds Pro,15990,40,2024-07-03
 Huawei FreeBuds Pro 2,24990,22,2024-06-8
 Huawei FreeBuds Pro 2,23990,25,2024-06-08
 Huawei FreeBuds Pro 2,22990,28,2024-06-09
 Huawei FreeBuds Pro 2,21990,30,2024-06-10
 Huawei FreeBuds Pro 2,20990,35,2024-06-11
+Huawei FreeBuds Pro 2,19990,40,2024-06-12
+Huawei FreeBuds Pro 2,18990,45,2024-06-13
+Huawei FreeBuds Pro 2,17990,50,2024-06-14
 Sennheiser Momentum True Wireless 3,32990,25,2024-06-05
 Sennheiser Momentum True Wireless 3,31990,28,2024-06-06
 Sennheiser Momentum True Wireless 3,30990,30,2024-06-07
 Sennheiser Momentum True Wireless 3,29990,32,2024-06-08
 Sennheiser Momentum True Wireless 3,28990,35,2024-06-09
+Sennheiser Momentum True Wireless 3,27990,38,2024-06-10
+Sennheiser Momentum True Wireless 3,26990,40,2024-06-11
+Sennheiser Momentum True Wireless 3,25990,42,2024-06-12
