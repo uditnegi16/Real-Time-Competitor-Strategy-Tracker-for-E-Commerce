@@ -10,3 +10,4 @@ streamlit
 transformers
 selenium
 webdriver-manager
+beautifulsoup4
