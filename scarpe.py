@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 import pandas as pd
 import requests
+import plotly.express as px  
 import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -44,110 +45,169 @@ def get_driver():
 
     
 def scrape_product_data(link):
-    driver=get_driver()
+    driver = get_driver()
     driver.set_window_size(1920, 1080)
     driver.get(link)
-    product_data, review_data = {}, {}
-    product_data["reviews"] = []
-    wait = WebDriverWait(driver, 10)
-    time.sleep(5)
+    product_data = {
+        "product_name": "",  # Add product_name to the dictionary
+        "selling price": 0,
+        "original price": 0,
+        "discount": 0,
+        "rating": 0,
+        "reviews": [],
+        "product_url": link,
+        "date": datetime.now().strftime("%Y-%m-%d"),
+    }
     retry = 0
     while retry < 3:
         try:
             driver.save_screenshot("screenshot.png")
+            wait = WebDriverWait(driver, 10)
             wait.until(EC.presence_of_element_located((By.CLASS_NAME, "a-offscreen")))
             break
-
-        except Exception:
-            print("retrying")
+        except Exception as e:
+            print(f"Retrying... Error: {e}")
             retry += 1
             driver.get(link)
             time.sleep(5)
 
-        driver.save_screenshot("screenshot.png")
+    try:
+        price_elem = driver.find_element(
+            By.XPATH, '//*[@id="corePriceDisplay_desktop_feature_div"]/div[1]/span[3]/span[2]/span[2]'
+        )
+        product_data["selling price"] = int("".join(price_elem.text.strip().split(",")))
+    except Exception as e:
+        print(f"Error extracting selling price: {e}")
+
+    try:
+        original_price = driver.find_element(
+        By.XPATH, '//*[@id="corePriceDisplay_desktop_feature_div"]/div[2]/span/span[1]/span[2]/span/span[2]'
+        ).text
+        product_data["original price"] = extract_price(original_price)
+    except Exception as e:
+        print(f"Error extracting original price: {e}")
 
 
-        try:
-            price_elem = driver.find_element(By.XPATH,
-            '// *[ @ id = "corePriceDisplay_desktop_feature_div"] / div[1] / span[3] / span[2] / span[2]',)
-            product_data["selling price"] = int("".join(price_elem.text.strip().split(",")))
+    try:
+        discount = driver.find_element(
+            By.XPATH, '//*[@id="corePriceDisplay_desktop_feature_div"]/div[1]/span[2]'
+        )
+        full_rating_text = discount.get_attribute("innerHTML").strip()
+        if " out of 5 stars" in full_rating_text.lower():
+            product_data["rating"] = full_rating_text.lower().split(" out of")[0].strip()
+        else:
+            product_data["discount"] = full_rating_text
+    except Exception as e:
+        print(f"Error extracting discount: {e}")
 
-        except:
-            product_data["selling price"] = 0
-
-        try:
-            original_price = driver.find_element(
-                By.XPATH,
-                '// * [ @ id = "corePriceDisplay_desktop_feature_div"] / div[2] / span / span[1] / span[2] / span /span[2]',).text
-
-            product_data["original price"] = int("".join(original_price.strip().split(",")))
-        except:
-            product_data["original price"] = 0
-
-
-        try:
-            discount = driver.find_element(
-
-                       By.XPATH,
-        ' // *[ @ id = "corePriceDisplay_desktop_feature_div"] / div[1] / span[2] ',)
-            full_rating_text = discount.get_attribute("innerHTML").strip()
-            if " out of 5 stars" in full_rating_text.lower():
-                product_data["rating"] = (
-                        full_rating_text.lower().split(" out of")[0].strip()
-                )
-            else:
-                product_data["discount"] = full_rating_text
-
-
-        except:
-            product_data["discount"] = 0
-
-        try:
-            driver.find_element(By.CLASS_NAME, "a-icon-popover").click()
-            time.sleep(1)
-
-        except:
-            pass
-
-        try:
-            reviews_link = driver.find_elements(
-            By.XPATH, "//a[contains(text(), 'See customer reviews')]")[-1].get_attribute("href")
-            product_data["product_url"] = reviews_link.split("#")[0]
+    try:
+        rating_elem = driver.find_element(By.CLASS_NAME, "a-icon-star")
+        product_data["rating"] = rating_elem.get_attribute("innerText").strip()
+    except Exception as e:
+        print(f"Error extracting rating: {e}")
+    try:
+        reviews_link_elements = driver.find_elements(
+        By.XPATH, "//a[contains(text(), 'See customer reviews')]"
+        )
+        if reviews_link_elements:
+            reviews_link = reviews_link_elements[-1].get_attribute("href")
             driver.get(reviews_link)
             time.sleep(3)
-            reviews = driver.find_element(By.ID, "cm-cr-dp-review-list")
-            reviews = reviews.find_elements(By.TAG_NAME, "li")
-            for item in reviews:
-                product_data["reviews"].append(item.get_attribute("innerText"))
-            driver.back()
-            time.sleep(3)
 
-        except Exception:
-            product_data["reviews"] = []
-            driver.quit()
-            return product_data
+            reviews_section = driver.find_element(By.ID, "cm-cr-dp-review-list")
+            review_elements = reviews_section.find_elements(By.TAG_NAME, "li")
+
+            for review in review_elements:
+                product_data["reviews"].append(review.text.strip())
+        else:
+            print("No customer reviews found.")
+    except Exception as e:
+        print(f"Error extracting reviews: {e}")
+        
+    driver.quit()
+    return product_data
+
+import re
+
+def extract_price(price_text):
+    """Extracts and converts price from a string with currency symbols or commas."""
+    price_text = re.sub(r"[^\d]", "", price_text)  # Remove ₹, commas, and other symbols
+    return int(price_text) if price_text else 0
+
+def extract_rating_from_review(review_text):
+    match = re.search(r"(\d+\.\d+) out of 5 stars", review_text)
+    if match:
+        return float(match.group(1))
+    return None
 
 for product_name, link in links.items():
     product_data = scrape_product_data(link)
-    reviews = json.loads(pd.read_csv("reviews.csv").to_json(orient = "records"))
-    price = json.loads(pd.read_csv("competitor_data.csv").to_json(orient="records"))
-    price.append(
-        {
-
+    
+    # Update reviews.csv
+    try:
+        reviews_df = pd.read_csv("reviews.csv")
+    except FileNotFoundError:
+        reviews_df = pd.DataFrame(columns=["product_name", "review", "rating", "date"])
+    
+    new_reviews = []
+    for review_text in product_data["reviews"]:
+        rating = extract_rating_from_review(review_text)
+        new_reviews.append({
             "product_name": product_name,
-            "Price": product_data["product_name"],
-            "Discount": product_data["discount"],
-            "Date": datetime.now().strftime("%d-%m-%y"),
-        }
-    )
-    for i in product_data["reviews"]:
-        reviews.append({"product_name": product_name, "reviews": i})
-    pd.DataFrame(reviews).to_csv("reviews.csv", index=False)
-    pd.DataFrame(price).to_csv("competitor_data.csv", index=False)
+            "review": review_text,
+            "rating": rating,
+            "date": datetime.now().strftime("%Y-%m-%d")
+        })
+    
+    new_reviews_df = pd.DataFrame(new_reviews)
+    reviews_df = pd.concat([reviews_df, new_reviews_df], ignore_index=True)
+    reviews_df.to_csv("reviews.csv", index=False)
+    
+    # Update competitor_data.csv
+    # try:
+    #     competitor_df = pd.read_csv("competitor_data.csv")
+    # except FileNotFoundError:
+    #     competitor_df = pd.DataFrame(columns=["product_name", "price", "discount", "date"])
+    
+    # new_data = {
+    #     "product_name": product_name,
+    #     "price": product_data["selling price"],
+    #     "discount": product_data["discount"],
+    #     "date": datetime.now().strftime("%Y-%m-%d")
+    # }
+    
+    # new_data_df = pd.DataFrame([new_data])
+    # competitor_df = pd.concat([competitor_df, new_data_df], ignore_index=True)
+    # competitor_df.to_csv("competitor_data.csv", index=False)
+    try:
+        competitor_df = pd.read_csv("competitor_data.csv")
 
+        # Drop extra columns if they exist
+        competitor_df = competitor_df[['product_name', 'price', 'discount', 'date']]
+    except FileNotFoundError:
+        competitor_df = pd.DataFrame(columns=["product_name", "price", "discount", "date"])
+
+    # Create new data entry
+    new_data = {
+        "product_name": product_name,
+        "price": product_data["selling price"],
+        "discount": product_data["discount"],
+        "date": datetime.now().strftime("%Y-%m-%d"),
+    }
+
+    #  Convert to DataFrame and ensure column alignment
+    new_data_df = pd.DataFrame([new_data], columns=["product_name", "price", "discount", "date"])
+
+    # Append data correctly
+    competitor_df = pd.concat([competitor_df, new_data_df], ignore_index=True)
+
+    # Save without extra columns
+    competitor_df.to_csv("competitor_data.csv", index=False)
+
+    
 # API keys
 API_KEY = "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"  # Groq API Key
-SLACK_WEBHOOK = "xoxe.xoxp-1-Mi0yLTgzNjMxNDY1MTEwMjgtODM3MzMxODc4NzI5Ny04Mzg1NTc0Mjg4ODUxLTgzODgxODkwNzUxMjQtOWVlODU0MzVhOWJiZjk3ZTAzM2JkNzdkNjVhNjE2MTViOTM3ZWRjMzc3MGRiYjI3ZDQ0MzhmM2FhNzNlYjkyZA"  # Slack webhook URL
+SLACK_WEBHOOK = "https://hooks.slack.com/services/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"  # Slack webhook URL
 # Streamlit app setup
 st.set_page_config(layout="wide")
 # Create two columns
@@ -223,10 +283,10 @@ def forecast_discounts_arima(data, future_days=5):
     :return: DataFrame with historical and forecasted discounts.
     """
     data = data.sort_index()
-    data["Discount"] = pd.to_numeric(data["Discount"], errors="coerce")
-    data = data.dropna(subset=["Discount"])
+    data["discount"] = pd.to_numeric(data["discount"], errors="coerce")
+    data = data.dropna(subset=["discount"])
 
-    discount_series = data["Discount"]
+    discount_series = data["discount"]
 
     if not isinstance(data.index, pd.DatetimeIndex):
         try:
@@ -303,12 +363,15 @@ def generate_strategy_recommendation(product_name, competitor_data, sentiment):
 
 st.sidebar.header("❄️Select a Product❄️")
 
-products = [
-    "Apple iPhone 15",
-    "Apple 2023 MacBook Pro",
-    "OnePlus Nord 4 5G",
-    "Sony WH-1000XM5"
-]
+def get_product_list():
+    try:
+        competitor_df = pd.read_csv("competitor_data.csv")
+        return competitor_df["product_name"].drop_duplicates().tolist()
+    except FileNotFoundError:
+        return []
+
+products = get_product_list()
+
 selected_product = st.sidebar.selectbox("Choose a product to analyze:", products)
 
 competitor_data = load_competitor_data()
@@ -322,10 +385,9 @@ st.subheader("Competitor Data")
 st.table(product_data.tail(5))
 
 if not product_reviews.empty:
-    product_reviews["reviews"] = product_reviews["reviews"].apply(
-        lambda x: truncate_text(x, 512)
-    )
-    reviews = product_reviews["reviews"].tolist()
+    product_reviews.loc[:, "review"] = product_reviews["review"].apply(lambda x: truncate_text(x, 512))
+
+    reviews = product_reviews["review"].tolist()
     sentiments = analyze_sentiment(reviews)
 
     st.subheader("Customer Sentiment Analysis")
@@ -335,24 +397,24 @@ if not product_reviews.empty:
 else:
     st.write("No reviews available for this product.")
 
-product_data["Date"] = pd.to_datetime(product_data["Date"], errors="coerce")
-product_data = product_data.dropna(subset=["Date"])
-product_data.set_index("Date", inplace=True)
-product_data["Discount"] = pd.to_numeric(product_data["Discount"], errors="coerce")
-product_data = product_data.dropna(subset=["Discount"])
+product_data["date"] = pd.to_datetime(product_data["date"], errors="coerce")
+# product_data = product_data.dropna(subset=["Date"])
+product_data.index= pd.date_range(start=product_data.index.min(), periods=len(product_data), freq="D")
+product_data["discount"] = pd.to_numeric(product_data["discount"], errors="coerce")
+product_data = product_data.dropna(subset=["discount"])
 
 # Forecasting Model
 product_data_with_predictions = forecast_discounts_arima(product_data)
 
 st.subheader("Competitor Current and Predicted Discounts")
-st.table(product_data_with_predictions.tail(10))
+st.table(product_data_with_predictions[["Predicted_Discount"]].tail(10))
+
 
 recommendations = generate_strategy_recommendation(
     selected_product,
     product_data_with_predictions,
     sentiments if not product_reviews.empty else "No reviews available",
 )
-
 st.subheader("Strategic Recommendations")
 st.write(recommendations)
 
