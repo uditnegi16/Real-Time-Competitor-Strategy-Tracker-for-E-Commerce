@@ -36,7 +36,7 @@ st.markdown("""
 @st.cache_data(ttl=3600)
 def load_data():
     competitor_data = pd.read_csv("competitor_data.csv")
-    competitor_data['Date'] = pd.to_datetime(competitor_data['Date'])
+    competitor_data['date'] = pd.to_datetime(competitor_data['date'])
     reviews_data = pd.read_csv("reviews.csv")
     reviews_data['date'] = pd.to_datetime(reviews_data['date'])
     return competitor_data, reviews_data
@@ -62,38 +62,75 @@ def train_price_predictor(data):
     model.fit(X_train, y_train)
     return model
 
+# def forecast_discounts(data, days=7):
+#     """Forecast discounts using ARIMA."""
+#     if not isinstance(data.index, pd.DatetimeIndex):
+#         data = data.set_index('date')
+    
+#     model = ARIMA(data['discount'], order=(5,1,0))
+#     model_fit = model.fit()
+    
+#     forecast = model_fit.forecast(steps=days)
+#     future_dates = pd.date_range(
+#         start=data.index[-1] + pd.Timedelta(days=1),
+#         periods=days
+#     )
+    
+#     return pd.DataFrame({
+#         'Date': future_dates,
+#         'Predicted_Discount': forecast
+#     })
 def forecast_discounts(data, days=7):
     """Forecast discounts using ARIMA."""
+    
     if not isinstance(data.index, pd.DatetimeIndex):
-        data = data.set_index('Date')
+        data = data.set_index('date')
+
+    # Ensure discount column is numeric
+    data['discount'] = pd.to_numeric(data['discount'], errors='coerce')
+    data = data.dropna(subset=['discount'])  # Remove NaN values
     
-    model = ARIMA(data['Discount'], order=(5,1,0))
+    # Ensure enough data points
+    if len(data) > 5:
+        raise ValueError("Not enough data points for ARIMA forecasting.")
+
+    # Ensure non-constant discount values
+    if data['discount'].std() == 0:
+        raise ValueError("Constant discount values cannot be used for ARIMA.")
+
+    # Set explicit date frequency
+    try:
+        data = data.asfreq(pd.infer_freq(data.index))
+    except:
+        data = data.asfreq('D')  # Force daily frequency
+
+    # Fit ARIMA
+    model = ARIMA(data['discount'], order=(1,0,0))
     model_fit = model.fit()
-    
+
+    # Forecast
     forecast = model_fit.forecast(steps=days)
     future_dates = pd.date_range(
         start=data.index[-1] + pd.Timedelta(days=1),
         periods=days
     )
-    
-    return pd.DataFrame({
-        'Date': future_dates,
-        'Predicted_Discount': forecast
-    })
+
+    return pd.DataFrame({'Date': future_dates, 'Predicted_Discount': forecast})
+
 
 def calculate_market_position(data, product_name):
     """Calculate market position metrics."""
     product_data = data[data['product_name'] == product_name].iloc[-1]
-    all_products = data[data['Date'] == data['Date'].max()]
+    all_products = data[data['date'] == data['date'].max()]
     
-    price_percentile = (all_products['Price'] < product_data['Price']).mean() * 100
-    discount_percentile = (all_products['Discount'] < product_data['Discount']).mean() * 100
+    price_percentile = (all_products['price'] < product_data['price']).mean() * 100
+    discount_percentile = (all_products['discount'] < product_data['discount']).mean() * 100
     
     return {
         'price_percentile': price_percentile,
         'discount_percentile': discount_percentile,
-        'price': product_data['Price'],
-        'discount': product_data['Discount']
+        'price': product_data['price'],
+        'discount': product_data['discount']
     }
 
 def generate_recommendations(market_position, sentiment_data, forecast_data):
@@ -134,15 +171,15 @@ def main():
     date_range = st.sidebar.date_input(
         "Date Range",
         [
-            competitor_data['Date'].max() - timedelta(days=30),
-            competitor_data['Date'].max()
+            competitor_data['date'].max() - timedelta(days=30),
+            competitor_data['date'].max()
         ]
     )
     
     # Filter data
     filtered_data = competitor_data[
-        (competitor_data['Date'] >= pd.Timestamp(date_range[0])) &
-        (competitor_data['Date'] <= pd.Timestamp(date_range[1])) &
+        (competitor_data['date'] >= pd.Timestamp(date_range[0])) &
+        (competitor_data['date'] <= pd.Timestamp(date_range[1])) &
         (competitor_data['product_name'] == selected_product)
     ]
     
@@ -154,8 +191,8 @@ def main():
         st.subheader("Price Trends")
         fig_price = px.line(
             filtered_data,
-            x='Date',
-            y='Price',
+            x='date',
+            y='price',
             title='Historical Price Trends'
         )
         st.plotly_chart(fig_price, use_container_width=True)
@@ -165,8 +202,8 @@ def main():
         st.subheader("Discount Analysis")
         fig_discount = px.bar(
             filtered_data,
-            x='Date',
-            y='Discount',
+            x='date',
+            y='discount',
             title='Discount Distribution'
         )
         st.plotly_chart(fig_discount, use_container_width=True)
@@ -203,7 +240,7 @@ def main():
     product_reviews = reviews_data[reviews_data['product_name'] == selected_product]
     
     if not product_reviews.empty:
-        sentiments = mock_sentiment_analysis(product_reviews['reviews'].tolist())
+        sentiments = mock_sentiment_analysis(product_reviews['review'].tolist())
         fig_sentiment = px.pie(
             sentiments,
             names='label',
@@ -217,8 +254,8 @@ def main():
     
     fig_forecast = go.Figure()
     fig_forecast.add_trace(go.Scatter(
-        x=filtered_data['Date'],
-        y=filtered_data['Discount'],
+        x=filtered_data['date'],
+        y=filtered_data['discount'],
         name='Historical Discounts'
     ))
     fig_forecast.add_trace(go.Scatter(
