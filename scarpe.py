@@ -20,15 +20,35 @@ from sklearn.model_selection import train_test_split
 from statsmodels.tsa.arima.model import ARIMA
 from selenium.webdriver.chrome.service import Service
 
-links={
-    "Apple iPhone 13 (128GB) - Green":"https://www.amazon.in/Apple-iPhone-13-128GB-Green/dp/B09V4B6K53/ref=sr_1_1_sspa?crid=2XWF6OQBE9MW2&dib=eyJ2IjoiMSJ9.4Amcm6ymShwYf2cUNy6g87ZAmr160niWSMsGfJ6ktkhVvBfKClhwZifyFoyaaxp3p9CgrK4JD0kka6vg2gnarqoOb62duNBPCD13Tp0i69vRDmk4uzfDB-25bgoJNhIMNFEoNjBAjmfxVst_C0QmW8zulZt3XeCwXmXb04f26KHMlZ8v3WYOdj3IywjwNuQ1kRaqWcGGKYG5719prdWaQTuqcco0NBNjnzPCNlPyH_Y.GrzT8mZU2IyaErRyD0CZZeRLmD9_fnsrr95RqbZorhw&dib_tag=se&keywords=iphone&qid=1737998659&sprefix=iphone%2Caps%2C238&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1",
-    "Apple iPhone 14 (128 GB) - Midnight":"https://www.amazon.in/Apple-iPhone-14-128GB-Midnight/dp/B0BDHX8Z63/ref=sr_1_2_sspa?crid=2XWF6OQBE9MW2&dib=eyJ2IjoiMSJ9.4Amcm6ymShwYf2cUNy6g87ZAmr160niWSMsGfJ6ktkhVvBfKClhwZifyFoyaaxp3p9CgrK4JD0kka6vg2gnarqoOb62duNBPCD13Tp0i69vRDmk4uzfDB-25bgoJNhIMNFEoNjBAjmfxVst_C0QmW8zulZt3XeCwXmXb04f26KHMlZ8v3WYOdj3IywjwNuQ1kRaqWcGGKYG5719prdWaQTuqcco0NBNjnzPCNlPyH_Y.GrzT8mZU2IyaErRyD0CZZeRLmD9_fnsrr95RqbZorhw&dib_tag=se&keywords=iphone&qid=1737998659&sprefix=iphone%2Caps%2C238&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1",
-    "Apple iPhone 15 (128 GB) - Blue":"https://www.amazon.in/Apple-iPhone-15-128-GB/dp/B0CHX2F5QT/ref=sr_1_3?crid=2XWF6OQBE9MW2&dib=eyJ2IjoiMSJ9.4Amcm6ymShwYf2cUNy6g87ZAmr160niWSMsGfJ6ktkhVvBfKClhwZifyFoyaaxp3p9CgrK4JD0kka6vg2gnarqoOb62duNBPCD13Tp0i69vRDmk4uzfDB-25bgoJNhIMNFEoNjBAjmfxVst_C0QmW8zulZt3XeCwXmXb04f26KHMlZ8v3WYOdj3IywjwNuQ1kRaqWcGGKYG5719prdWaQTuqcco0NBNjnzPCNlPyH_Y.GrzT8mZU2IyaErRyD0CZZeRLmD9_fnsrr95RqbZorhw&dib_tag=se&keywords=iphone&qid=1737998659&sprefix=iphone%2Caps%2C238&sr=8-3&th=1"
-    }
+
+# "Apple iPhone 15 plus (128 GB) - Green":"https://www.amazon.in/Apple-iPhone-15-128-GB/dp/B0CHX6NQMD/ref=sr_1_1_sspa?crid=R1L0YPL2S29X&dib=eyJ2IjoiMSJ9.K566O76AQlK71Xxvu5cZV6_Hh6PF3BvOLMRBFifnIHFjNEjzrchmYVdosmxa1iogCPotME2BHnNsaBwUPDA2-mllBijAs7DW8RhIBLy4p9-0H0cHBLm-DzpOvciArbilkz60vobgyha8ic1eC0P42HzmYEw2QEWf0WVbsaGqIsuzl2ehH7OMUCRl5-NFUKjsOq_LK1mKqs_xuQSCawgxHqQz0FQIkrw9jZUPC_edpSs.BrpZORYmy3n8cv644G8deXyR46aI8g1nFhOltas9NK0&dib_tag=se&keywords=apple+iphone+12+122+gb+green&nsdOptOutParam=true&qid=1739185717&sprefix=apple+iphone+12+122+gb+green+%2Caps%2C238&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",
+# "Apple iPhone 15 Plus (128 GB) - Green":"https://www.amazon.in/Apple-iPhone-15-Plus-128/dp/B0CHWZCY43/ref=sr_1_7?crid=265DLKKT3883C&dib=eyJ2IjoiMSJ9.jauChL7kXSWomYIKIMCPMqWDoB5h-9C6cHAj-CJcKnh6YYmEpHxp1ek5oho5l2JwOWGb7xQ_PL6ibNxvQvBwauY4LjNmXf5x-SnPd0MW_6b7Pcn4kBn0Z38ia8bJCLnXlWWSdI7qj8xt5P-SaCwk0IaQXjc-TAELb-6-XS8gqV7MnzsqvZSSr_zDE9gHTV9m4d0393IiBo5-yMoLhT9Yj4pCBh4ckxqmhElb9uoCozc.nwjDCGaTpnVi4lEuAs3LE16EVUC0buN4QasJtEo4D20&dib_tag=se&keywords=apple+iphone+15+128+gb+green&nsdOptOutParam=true&qid=1739185833&sprefix=apple+iphone+15+128+gb+green%2Caps%2C253&sr=8-7",
+# "Apple iPhone 15 Plus (128 GB) - Blue":"https://www.amazon.in/Apple-iPhone-15-Plus-128/dp/B0CHX6X2WW/ref=sr_1_11_sspa?crid=265DLKKT3883C&dib=eyJ2IjoiMSJ9.jauChL7kXSWomYIKIMCPMqWDoB5h-9C6cHAj-CJcKnh6YYmEpHxp1ek5oho5l2JwOWGb7xQ_PL6ibNxvQvBwauY4LjNmXf5x-SnPd0MW_6b7Pcn4kBn0Z38ia8bJCLnXlWWSdI7qj8xt5P-SaCwk0IaQXjc-TAELb-6-XS8gqV7MnzsqvZSSr_zDE9gHTV9m4d0393IiBo5-yMoLhT9Yj4pCBh4ckxqmhElb9uoCozc.nwjDCGaTpnVi4lEuAs3LE16EVUC0buN4QasJtEo4D20&dib_tag=se&keywords=apple%2Biphone%2B15%2B128%2Bgb%2Bgreen&nsdOptOutParam=true&qid=1739185833&sprefix=apple%2Biphone%2B15%2B128%2Bgb%2Bgreen%2Caps%2C253&sr=8-11-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9tdGY&th=1",
+# "Apple iPhone 15 Plus (128 GB) - Black":"https://www.amazon.in/Apple-iPhone-15-Plus-128/dp/B0CHXCR9CX/ref=sr_1_15?crid=265DLKKT3883C&dib=eyJ2IjoiMSJ9.jauChL7kXSWomYIKIMCPMqWDoB5h-9C6cHAj-CJcKnh6YYmEpHxp1ek5oho5l2JwOWGb7xQ_PL6ibNxvQvBwauY4LjNmXf5x-SnPd0MW_6b7Pcn4kBn0Z38ia8bJCLnXlWWSdI7qj8xt5P-SaCwk0IaQXjc-TAELb-6-XS8gqV7MnzsqvZSSr_zDE9gHTV9m4d0393IiBo5-yMoLhT9Yj4pCBh4ckxqmhElb9uoCozc.nwjDCGaTpnVi4lEuAs3LE16EVUC0buN4QasJtEo4D20&dib_tag=se&keywords=apple%2Biphone%2B15%2B128%2Bgb%2Bgreen&nsdOptOutParam=true&qid=1739185833&sprefix=apple%2Biphone%2B15%2B128%2Bgb%2Bgreen%2Caps%2C253&sr=8-15&th=1",
+# "Apple iPhone 15 Plus (128 GB) - Pink":"https://www.amazon.in/Apple-iPhone-15-Plus-128/dp/B0CHWYXK1R/ref=sr_1_16?crid=265DLKKT3883C&dib=eyJ2IjoiMSJ9.jauChL7kXSWomYIKIMCPMqWDoB5h-9C6cHAj-CJcKnh6YYmEpHxp1ek5oho5l2JwOWGb7xQ_PL6ibNxvQvBwauY4LjNmXf5x-SnPd0MW_6b7Pcn4kBn0Z38ia8bJCLnXlWWSdI7qj8xt5P-SaCwk0IaQXjc-TAELb-6-XS8gqV7MnzsqvZSSr_zDE9gHTV9m4d0393IiBo5-yMoLhT9Yj4pCBh4ckxqmhElb9uoCozc.nwjDCGaTpnVi4lEuAs3LE16EVUC0buN4QasJtEo4D20&dib_tag=se&keywords=apple+iphone+15+128+gb+green&nsdOptOutParam=true&qid=1739185833&sprefix=apple+iphone+15+128+gb+green%2Caps%2C253&sr=8-16"
+# "ZEBRONICS THUNDER Bluetooth 5.3 Wireless over Ear Headphones with 60H Backup (Black)":"https://www.amazon.in/ZEBRONICS-Bluetooth-Headphones-assistant-Comfortable/dp/B07L8KNP5F/ref=sr_1_2?crid=1W40G5GRB60WE&dib=eyJ2IjoiMSJ9.0DASzxIE9pACZHbHX81_Jf1FjTpQyWa45-bqicf3mZ4TMWosRZQ9p_cEGpkRH6oLsU5tBTUrYq6eTLSldqlNIlTSmwdzX9wOVEhjjwCQUN7-seiopr4I0_V1_jXlzcC3I8SIrbfg0bJwHjtldileTNN1ESpxrXeVXY1dBm7twB6bt9AkfvPe1IOEC_TY2YchiiaRXmaar0c_3g-SHrcQeZtl1Za3EJH6ZyDaBMTRglxkl78jhYaJ7kfgDf5UiNytJBvVfX4H4ST1QaDoHBD38HfAQ56j6HjN8QsvsWv7XQCPaeZOTt1aZpJlaOg-LJFeKbniBt3k-kIg5WIsD6bYoUQvXmrIX8QlJbQtwaiP7g4.ZP4N7cUoMb50y-y1MZKGI3YlZ21qGpKtuygASlyZ1Ek&dib_tag=se&keywords=headphones&qid=1739188659&refinements=p_123%3A396324&rnid=91049095031&s=electronics&sprefix=headphone%2B%2Caps%2C263&sr=1-2&th=1",
+# "ZEBRONICS Thunder Bluetooth 5.3 Wireless Over Ear Headphones with 60H Backup (Sea Green)":"https://www.amazon.in/ZEBRONICS-Zeb-Thunder-Connectivity-Sea-Green/dp/B09B5CPV71/ref=sr_1_1?crid=1W40G5GRB60WE&dib=eyJ2IjoiMSJ9.0DASzxIE9pACZHbHX81_Jf1FjTpQyWa45-bqicf3mZ4TMWosRZQ9p_cEGpkRH6oLsU5tBTUrYq6eTLSldqlNIlTSmwdzX9wOVEhjjwCQUN7-seiopr4I0_V1_jXlzcC3I8SIrbfg0bJwHjtldileTNN1ESpxrXeVXY1dBm7twB6bt9AkfvPe1IOEC_TY2YchiiaRXmaar0c_3g-SHrcQeZtl1Za3EJH6ZyDaBMTRglxkl78jhYaJ7kfgDf5UiNytJBvVfX4H4ST1QaDoHBD38HfAQ56j6HjN8QsvsWv7XQCPaeZOTt1aZpJlaOg-LJFeKbniBt3k-kIg5WIsD6bYoUQvXmrIX8QlJbQtwaiP7g4.ZP4N7cUoMb50y-y1MZKGI3YlZ21qGpKtuygASlyZ1Ek&dib_tag=se&keywords=headphones&qid=1739188659&refinements=p_123%3A396324&rnid=91049095031&s=electronics&sprefix=headphone%2B%2Caps%2C263&sr=1-1&th=1",
+# "ZEBRONICS Thunder Bluetooth 5.3 Wireless Over Ear Headphones with 60H Backup (Teal Green)":"https://www.amazon.in/ZEBRONICS-Zeb-Thunder-Bluetooth-Teal-Green/dp/B09B5BS6G4/ref=sr_1_4?crid=1Q9Y5CJ3Z2XT3&dib=eyJ2IjoiMSJ9.1AX7wDxY6c1qXJ5gFVFXYOVb6LTEOmUNiVllp1t6aHS9j3cgUfQJ7XcxPpU3vkhFEy7eAEdFjK5gluBIEZWuujnEBaobvTNzyouUwBXaSNs1eZ2uGK1MT6cnUlcolxj7ZR-I8cLecjyFvZF8K1FBcxIqfItdb8Kjq4pTITjUZGlw97ck5iSsggbrJCmU3FiVl8znpHevI6tjycLL7zij9gvdwx8WPeAvuUWgiMPQk0jY3v1JeCW55-sbXP_fJ5-7sIAJ-57YWTnH86W_x3pSneNKs2krw8LYlLmIf72GljKDlKX_73QvtPNYgcg40R4KFUgYFr_fHWU4oUR8Vdfw0Cdpih-6layxGOn4hlIMouc.O48DybnV2ME8jdPP9K7Q-Z9-jzZyi4rHSP8ADatuV24&dib_tag=se&keywords=ZEBRONICS%2BThunder%2BBluetooth%2B5.3%2BWireless%2BOver%2BEar%2BHeadphones%2Bwith%2B60H%2BBackup%2C%2BGaming%2BMode%2C%2BDual%2BPairing%2C%2BEnc%2C%2BAux%2C%2BMicro%2BSd%2C%2BVoice%2BAssistant%2C%2BComfortable%2BEarcups%2C%2BCall%2BFunction&nsdOptOutParam=true&qid=1739188725&s=electronics&sprefix=zebronics%2Bthunder%2Bbluetooth%2B5.3%2Bwireless%2Bover%2Bear%2Bheadphones%2Bwith%2B60h%2Bbackup%2C%2Bgaming%2Bmode%2C%2Bdual%2Bpairing%2C%2Benc%2C%2Baux%2C%2Bmicro%2Bsd%2C%2Bvoice%2Bassistant%2C%2Bcomfortable%2Bearcups%2C%2Bcall%2Bfunction%2Celectronics%2C246&sr=1-4&th=1",
+# "ZEBRONICS Thunder Bluetooth 5.3 Wireless Over Ear Headphones with 60H Backup (Red)":"https://www.amazon.in/ZEBRONICS-Bluetooth-Headphones-Assistant-Comfortable/dp/B07L8LTS3J/ref=sr_1_5?crid=1Q9Y5CJ3Z2XT3&dib=eyJ2IjoiMSJ9.1AX7wDxY6c1qXJ5gFVFXYOVb6LTEOmUNiVllp1t6aHS9j3cgUfQJ7XcxPpU3vkhFEy7eAEdFjK5gluBIEZWuujnEBaobvTNzyouUwBXaSNs1eZ2uGK1MT6cnUlcolxj7ZR-I8cLecjyFvZF8K1FBcxIqfItdb8Kjq4pTITjUZGlw97ck5iSsggbrJCmU3FiVl8znpHevI6tjycLL7zij9gvdwx8WPeAvuUWgiMPQk0jY3v1JeCW55-sbXP_fJ5-7sIAJ-57YWTnH86W_x3pSneNKs2krw8LYlLmIf72GljKDlKX_73QvtPNYgcg40R4KFUgYFr_fHWU4oUR8Vdfw0Cdpih-6layxGOn4hlIMouc.O48DybnV2ME8jdPP9K7Q-Z9-jzZyi4rHSP8ADatuV24&dib_tag=se&keywords=ZEBRONICS%2BThunder%2BBluetooth%2B5.3%2BWireless%2BOver%2BEar%2BHeadphones%2Bwith%2B60H%2BBackup%2C%2BGaming%2BMode%2C%2BDual%2BPairing%2C%2BEnc%2C%2BAux%2C%2BMicro%2BSd%2C%2BVoice%2BAssistant%2C%2BComfortable%2BEarcups%2C%2BCall%2BFunction&nsdOptOutParam=true&qid=1739188725&s=electronics&sprefix=zebronics%2Bthunder%2Bbluetooth%2B5.3%2Bwireless%2Bover%2Bear%2Bheadphones%2Bwith%2B60h%2Bbackup%2C%2Bgaming%2Bmode%2C%2Bdual%2Bpairing%2C%2Benc%2C%2Baux%2C%2Bmicro%2Bsd%2C%2Bvoice%2Bassistant%2C%2Bcomfortable%2Bearcups%2C%2Bcall%2Bfunction%2Celectronics%2C246&sr=1-5&th=1",
+# "ZEBRONICS Thunder Over Ear Bluetooth 5.3 Wireless Headphones with 60H Backup (Blue)":"https://www.amazon.in/ZEBRONICS-Bluetooth-Headphones-Assistant-Comfortable/dp/B07L8JTZ4H/ref=sr_1_6?crid=1Q9Y5CJ3Z2XT3&dib=eyJ2IjoiMSJ9.1AX7wDxY6c1qXJ5gFVFXYOVb6LTEOmUNiVllp1t6aHS9j3cgUfQJ7XcxPpU3vkhFEy7eAEdFjK5gluBIEZWuujnEBaobvTNzyouUwBXaSNs1eZ2uGK1MT6cnUlcolxj7ZR-I8cLecjyFvZF8K1FBcxIqfItdb8Kjq4pTITjUZGlw97ck5iSsggbrJCmU3FiVl8znpHevI6tjycLL7zij9gvdwx8WPeAvuUWgiMPQk0jY3v1JeCW55-sbXP_fJ5-7sIAJ-57YWTnH86W_x3pSneNKs2krw8LYlLmIf72GljKDlKX_73QvtPNYgcg40R4KFUgYFr_fHWU4oUR8Vdfw0Cdpih-6layxGOn4hlIMouc.O48DybnV2ME8jdPP9K7Q-Z9-jzZyi4rHSP8ADatuV24&dib_tag=se&keywords=ZEBRONICS%2BThunder%2BBluetooth%2B5.3%2BWireless%2BOver%2BEar%2BHeadphones%2Bwith%2B60H%2BBackup%2C%2BGaming%2BMode%2C%2BDual%2BPairing%2C%2BEnc%2C%2BAux%2C%2BMicro%2BSd%2C%2BVoice%2BAssistant%2C%2BComfortable%2BEarcups%2C%2BCall%2BFunction&nsdOptOutParam=true&qid=1739188725&s=electronics&sprefix=zebronics%2Bthunder%2Bbluetooth%2B5.3%2Bwireless%2Bover%2Bear%2Bheadphones%2Bwith%2B60h%2Bbackup%2C%2Bgaming%2Bmode%2C%2Bdual%2Bpairing%2C%2Benc%2C%2Baux%2C%2Bmicro%2Bsd%2C%2Bvoice%2Bassistant%2C%2Bcomfortable%2Bearcups%2C%2Bcall%2Bfunction%2Celectronics%2C246&sr=1-6&th=1"   
+# "House of Quirk 1200ML Stainless Steel Tumbler (Green)":"https://www.amazon.in/OCEANEVO-Stainless-Tumbler-Insulated-Leakproof/dp/B0D631YTDT/ref=sr_1_3_sspa?crid=1AGBTKODWN1UX&dib=eyJ2IjoiMSJ9.nrXSdJgz9wxScAo78fS0NHW4KP6taMtjOR8C-G4c9iK-PLEfPeWWJlAC7-9u-JQDgegMjPpACMSphH0p9BvASCftoT4ep0b7RaKjKpHsZW_bWRphKvk21U4O6mOU_LlMUudGnIuFSX6fzh0O9NzVD_7SvG9ZIbg1C4VPrmGmpILNXGT0kvIQ78xrgxp9OqfVrvxbweZ51VL4BoGGexoVhmZIqZXsiQdwpHHIRX_aLQs38H5VhIVCuR-aP4YZ0k4ARVFbAgmFCIxBgsbZDFvopSvRI-3zMg0qpB65DKcCppw.KuH7YLPcTwwSPPwlNo09F89-sI2M5v27oW6sh6svVY8&dib_tag=se&keywords=House%2Bof%2BQuirk%2B1200ML%2BStainless%2BSteel%2BTumbler%2BHot%2Band%2BCold%2Bwith%2BHandle%2Band%2BLid%2B2%2BStraw%2C%2BDouble%2BInsulated%2BCup%2BLeak%2BProof%2BMug%2BCupholder%2Bfor%2BGym%2C%2BTravelling%2B(Oatmeal)&nsdOptOutParam=true&qid=1739190831&sprefix=house%2Bof%2Bquirk%2B1200ml%2Bstainless%2Bsteel%2Btumbler%2Bhot%2Band%2Bcold%2Bwith%2Bhandle%2Band%2Blid%2B2%2Bstraw%2C%2Bdouble%2Binsulated%2Bcup%2Bleak%2Bproof%2Bmug%2Bcupholder%2Bfor%2Bgym%2C%2Btravelling%2Boatmeal%2B%2Caps%2C251&sr=8-3-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&smid=A32IMOCB6C4QUT&th=1",
+# "House of Quirk 1200ML Stainless Steel Tumbler (Pink)":"https://www.amazon.in/Rioware%C2%AE-Stainless-Insulated-Cupholder-Travelling/dp/B0D98VXYBJ/ref=sr_1_4_sspa?crid=1AGBTKODWN1UX&dib=eyJ2IjoiMSJ9.nrXSdJgz9wxScAo78fS0NHW4KP6taMtjOR8C-G4c9iK-PLEfPeWWJlAC7-9u-JQDgegMjPpACMSphH0p9BvASCftoT4ep0b7RaKjKpHsZW_bWRphKvk21U4O6mOU_LlMUudGnIuFSX6fzh0O9NzVD_7SvG9ZIbg1C4VPrmGmpILNXGT0kvIQ78xrgxp9OqfVrvxbweZ51VL4BoGGexoVhmZIqZXsiQdwpHHIRX_aLQs38H5VhIVCuR-aP4YZ0k4ARVFbAgmFCIxBgsbZDFvopSvRI-3zMg0qpB65DKcCppw.KuH7YLPcTwwSPPwlNo09F89-sI2M5v27oW6sh6svVY8&dib_tag=se&keywords=House%2Bof%2BQuirk%2B1200ML%2BStainless%2BSteel%2BTumbler%2BHot%2Band%2BCold%2Bwith%2BHandle%2Band%2BLid%2B2%2BStraw%2C%2BDouble%2BInsulated%2BCup%2BLeak%2BProof%2BMug%2BCupholder%2Bfor%2BGym%2C%2BTravelling%2B(Oatmeal)&nsdOptOutParam=true&qid=1739190831&sprefix=house%2Bof%2Bquirk%2B1200ml%2Bstainless%2Bsteel%2Btumbler%2Bhot%2Band%2Bcold%2Bwith%2Bhandle%2Band%2Blid%2B2%2Bstraw%2C%2Bdouble%2Binsulated%2Bcup%2Bleak%2Bproof%2Bmug%2Bcupholder%2Bfor%2Bgym%2C%2Btravelling%2Boatmeal%2B%2Caps%2C251&sr=8-4-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1",
+# "House of Quirk 1200ML Stainless Steel Tumbler (Oatmeal)":"https://www.amazon.in/OCEANEVO-Stainless-Tumbler-Insulated-Leakproof/dp/B0D631YTDT/ref=sr_1_3_sspa?crid=1AGBTKODWN1UX&dib=eyJ2IjoiMSJ9.nrXSdJgz9wxScAo78fS0NHW4KP6taMtjOR8C-G4c9iK-PLEfPeWWJlAC7-9u-JQDgegMjPpACMSphH0p9BvASCftoT4ep0b7RaKjKpHsZW_bWRphKvk21U4O6mOU_LlMUudGnIuFSX6fzh0O9NzVD_7SvG9ZIbg1C4VPrmGmpILNXGT0kvIQ78xrgxp9OqfVrvxbweZ51VL4BoGGexoVhmZIqZXsiQdwpHHIRX_aLQs38H5VhIVCuR-aP4YZ0k4ARVFbAgmFCIxBgsbZDFvopSvRI-3zMg0qpB65DKcCppw.KuH7YLPcTwwSPPwlNo09F89-sI2M5v27oW6sh6svVY8&dib_tag=se&keywords=House%2Bof%2BQuirk%2B1200ML%2BStainless%2BSteel%2BTumbler%2BHot%2Band%2BCold%2Bwith%2BHandle%2Band%2BLid%2B2%2BStraw%2C%2BDouble%2BInsulated%2BCup%2BLeak%2BProof%2BMug%2BCupholder%2Bfor%2BGym%2C%2BTravelling%2B(Oatmeal)&nsdOptOutParam=true&qid=1739190831&sprefix=house%2Bof%2Bquirk%2B1200ml%2Bstainless%2Bsteel%2Btumbler%2Bhot%2Band%2Bcold%2Bwith%2Bhandle%2Band%2Blid%2B2%2Bstraw%2C%2Bdouble%2Binsulated%2Bcup%2Bleak%2Bproof%2Bmug%2Bcupholder%2Bfor%2Bgym%2C%2Btravelling%2Boatmeal%2B%2Caps%2C251&sr=8-3-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&smid=A32IMOCB6C4QUT&th=1",
+# "House of Quirk 1200ML Stainless Steel Tumbler(Rose Quartz)":"https://www.amazon.in/Leczonio-lid-Insulated-Stainless-Cupholder/dp/B0DBZ5K866/ref=sr_1_2_sspa?crid=1AGBTKODWN1UX&dib=eyJ2IjoiMSJ9.nrXSdJgz9wxScAo78fS0NHW4KP6taMtjOR8C-G4c9iK-PLEfPeWWJlAC7-9u-JQDgegMjPpACMSphH0p9BvASCftoT4ep0b7RaKjKpHsZW_bWRphKvk21U4O6mOU_LlMUudGnIuFSX6fzh0O9NzVD_7SvG9ZIbg1C4VPrmGmpILNXGT0kvIQ78xrgxp9OqfVrvxbweZ51VL4BoGGexoVhmZIqZXsiQdwpHHIRX_aLQs38H5VhIVCuR-aP4YZ0k4ARVFbAgmFCIxBgsbZDFvopSvRI-3zMg0qpB65DKcCppw.KuH7YLPcTwwSPPwlNo09F89-sI2M5v27oW6sh6svVY8&dib_tag=se&keywords=House%2Bof%2BQuirk%2B1200ML%2BStainless%2BSteel%2BTumbler%2BHot%2Band%2BCold%2Bwith%2BHandle%2Band%2BLid%2B2%2BStraw%2C%2BDouble%2BInsulated%2BCup%2BLeak%2BProof%2BMug%2BCupholder%2Bfor%2BGym%2C%2BTravelling%2B(Oatmeal)&nsdOptOutParam=true&qid=1739190831&sprefix=house%2Bof%2Bquirk%2B1200ml%2Bstainless%2Bsteel%2Btumbler%2Bhot%2Band%2Bcold%2Bwith%2Bhandle%2Band%2Blid%2B2%2Bstraw%2C%2Bdouble%2Binsulated%2Bcup%2Bleak%2Bproof%2Bmug%2Bcupholder%2Bfor%2Bgym%2C%2Btravelling%2Boatmeal%2B%2Caps%2C251&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1",
+# "House of Quirk 1200ML Stainless Steel Tumbler (Oatmeal)":"https://www.amazon.in/House-Quirk-Stainless-Insulated-Travelling/dp/B0CQCCLSV8/ref=sr_1_5?crid=1AGBTKODWN1UX&dib=eyJ2IjoiMSJ9.nrXSdJgz9wxScAo78fS0NHW4KP6taMtjOR8C-G4c9iK-PLEfPeWWJlAC7-9u-JQDgegMjPpACMSphH0p9BvASCftoT4ep0b7RaKjKpHsZW_bWRphKvk21U4O6mOU_LlMUudGnIuFSX6fzh0O9NzVD_7SvG9ZIbg1C4VPrmGmpILNXGT0kvIQ78xrgxp9OqfVrvxbweZ51VL4BoGGexoVhmZIqZXsiQdwpHHIRX_aLQs38H5VhIVCuR-aP4YZ0k4ARVFbAgmFCIxBgsbZDFvopeIru8YbLImu9DHhyFQjz0aV4M_F_6MRu0iSmMDNRfNNP-95A20FVnW2w3HLi62y46QYwQIlUVb2mBoodIJCSqdD0E6F7MJHyrGmoBGOYS6fu89WIFrXKkIOA71nWKhtWK4rp2i65wQCIlZxac8c2UL00OI9lqQqrjslSR9clXGO.M_K-tcxngE5f-8W2RIoMfulkd3k1pPGdTs0bgdFlU_8&dib_tag=se&keywords=House%2Bof%2BQuirk%2B1200ML%2BStainless%2BSteel%2BTumbler%2BHot%2Band%2BCold%2Bwith%2BHandle%2Band%2BLid%2B2%2BStraw%2C%2BDouble%2BInsulated%2BCup%2BLeak%2BProof%2BMug%2BCupholder%2Bfor%2BGym%2C%2BTravelling%2B(Oatmeal)&nsdOptOutParam=true&qid=1739190831&sprefix=house%2Bof%2Bquirk%2B1200ml%2Bstainless%2Bsteel%2Btumbler%2Bhot%2Band%2Bcold%2Bwith%2Bhandle%2Band%2Blid%2B2%2Bstraw%2C%2Bdouble%2Binsulated%2Bcup%2Bleak%2Bproof%2Bmug%2Bcupholder%2Bfor%2Bgym%2C%2Btravelling%2Boatmeal%2B%2Caps%2C251&sr=8-5&th=1"
+       
+
+links={"realme 12 Pro 5G (Submarine Blue, 8GB RAM 256 GB Storage)":"https://www.amazon.in/realme-12-5G-Submarine-Storage/dp/B0CTHXNT9W/ref=sr_1_1?crid=2V6YG7XUURBZ3&dib=eyJ2IjoiMSJ9.8VKsCk3uy1UUAaj-veQNvcLMHMRP_a9iRw-2kIB4i4IykY-aPoUjQHYU07-8_gUeYnS698A10gCVmj0PPbeTX6dlNm7xZatDgH3_ZQ5CczXCtNwgYyWf5Z3DDHAFH4zZyU0g_hAmrF5QjNKJbLEt4j83LxVRhhOlLSO1MykY0SrthzRqthvLEqbsABNu6265uSy-j2tPVTZ4E6Kk1XzG86LAqUqpZw6Gs2uPbCKji2o.lFYERbkPYgIw6enGMJLa5VN1kbZacv16I1t4TVUESm4&dib_tag=se&keywords=realme+12+pro+8+gb+256+gb&nsdOptOutParam=true&qid=1739193382&sprefix=realme+12+pro+8+gb+256+gb%2Caps%2C257&sr=8-1",}
 import chromedriver_autoinstaller
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+import re
+
+def extract_price(price_text):
+    """Extracts and converts price from a string with currency symbols or commas."""
+    price_text = re.sub(r"[^\d]", "", price_text)  # Remove ₹, commas, and other symbols
+    return int(price_text) if price_text else 0
 
 def get_driver():
     chrome_options = Options()
@@ -54,7 +74,7 @@ def scrape_product_data(link):
         "original price": 0,
         "discount": 0,
         "rating": 0,
-        "reviews": [],
+        "review": [],
         "product_url": link,
         "date": datetime.now().strftime("%Y-%m-%d"),
     }
@@ -101,44 +121,24 @@ def scrape_product_data(link):
         print(f"Error extracting discount: {e}")
 
     try:
-        rating_elem = driver.find_element(By.CLASS_NAME, "a-icon-star")
-        product_data["rating"] = rating_elem.get_attribute("innerText").strip()
+        rating_elem = driver.find_element(By.XPATH, '//*[@id="acrPopover"]/span[1]/a/span')
+        product_data["rating"] = rating_elem.text.strip()
+        print("Extracted Rating:", product_data["rating"])
     except Exception as e:
         print(f"Error extracting rating: {e}")
     try:
-        reviews_link_elements = driver.find_elements(
-        By.XPATH, "//a[contains(text(), 'See customer reviews')]"
+        # Wait for the review element to appear
+        review_elem = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//*[@id='product-summary']/p/span"))
         )
-        if reviews_link_elements:
-            reviews_link = reviews_link_elements[-1].get_attribute("href")
-            driver.get(reviews_link)
-            time.sleep(3)
-
-            reviews_section = driver.find_element(By.ID, "cm-cr-dp-review-list")
-            review_elements = reviews_section.find_elements(By.TAG_NAME, "li")
-
-            for review in review_elements:
-                product_data["reviews"].append(review.text.strip())
-        else:
-            print("No customer reviews found.")
+        product_data["review"].append(review_elem.text.strip())
+        print("Extracted Review:", review_elem.text.strip())
     except Exception as e:
-        print(f"Error extracting reviews: {e}")
-        
+        print(f"Error extracting AI-generated review: {e}")
+
+
     driver.quit()
     return product_data
-
-import re
-
-def extract_price(price_text):
-    """Extracts and converts price from a string with currency symbols or commas."""
-    price_text = re.sub(r"[^\d]", "", price_text)  # Remove ₹, commas, and other symbols
-    return int(price_text) if price_text else 0
-
-def extract_rating_from_review(review_text):
-    match = re.search(r"(\d+\.\d+) out of 5 stars", review_text)
-    if match:
-        return float(match.group(1))
-    return None
 
 for product_name, link in links.items():
     product_data = scrape_product_data(link)
@@ -149,36 +149,17 @@ for product_name, link in links.items():
     except FileNotFoundError:
         reviews_df = pd.DataFrame(columns=["product_name", "review", "rating", "date"])
     
-    new_reviews = []
-    for review_text in product_data["reviews"]:
-        rating = extract_rating_from_review(review_text)
-        new_reviews.append({
-            "product_name": product_name,
-            "review": review_text,
-            "rating": rating,
-            "date": datetime.now().strftime("%Y-%m-%d")
-        })
+    new_reviews={
+        "product_name": product_name,
+        "review": product_data["review"],
+        "rating": product_data["rating"],
+        "date": datetime.now().strftime("%Y-%m-%d")
+    }
     
     new_reviews_df = pd.DataFrame(new_reviews)
     reviews_df = pd.concat([reviews_df, new_reviews_df], ignore_index=True)
     reviews_df.to_csv("reviews.csv", index=False)
     
-    # Update competitor_data.csv
-    # try:
-    #     competitor_df = pd.read_csv("competitor_data.csv")
-    # except FileNotFoundError:
-    #     competitor_df = pd.DataFrame(columns=["product_name", "price", "discount", "date"])
-    
-    # new_data = {
-    #     "product_name": product_name,
-    #     "price": product_data["selling price"],
-    #     "discount": product_data["discount"],
-    #     "date": datetime.now().strftime("%Y-%m-%d")
-    # }
-    
-    # new_data_df = pd.DataFrame([new_data])
-    # competitor_df = pd.concat([competitor_df, new_data_df], ignore_index=True)
-    # competitor_df.to_csv("competitor_data.csv", index=False)
     try:
         competitor_df = pd.read_csv("competitor_data.csv")
 
@@ -207,7 +188,7 @@ for product_name, link in links.items():
     
 # API keys
 API_KEY = "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"  # Groq API Key
-SLACK_WEBHOOK = "https://hooks.slack.com/services/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"  # Slack webhook URL
+SLACK_WEBHOOK = "https://hooks.slack.com/services/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"  # Slack webhook URL
 # Streamlit app setup
 st.set_page_config(layout="wide")
 # Create two columns
@@ -243,7 +224,6 @@ def truncate_text(text, max_length=512):
 def load_competitor_data():
     """Load competitor data from a CSV file."""
     data = pd.read_csv("competitor_data.csv")
-    st.write(data.head())  # Display data for debugging
     return data
 
 # Load reviews data
@@ -385,7 +365,7 @@ st.subheader("Competitor Data")
 st.table(product_data.tail(5))
 
 if not product_reviews.empty:
-    product_reviews.loc[:, "review"] = product_reviews["review"].apply(lambda x: truncate_text(x, 512))
+    product_reviews.loc[:, "review"] = product_reviews["review"].apply(lambda x: truncate_text(x, 1024))
 
     reviews = product_reviews["review"].tolist()
     sentiments = analyze_sentiment(reviews)
